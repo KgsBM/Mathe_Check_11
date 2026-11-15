@@ -78,10 +78,10 @@
       font-weight: 600;
     }
 
-    /* DIN A4 Druckoptimierung (12-15 mm Standard-Rand) */
+    /* DIN A4 Druckoptimierung */
     @page {
       size: A4 portrait;
-      margin: 12mm 15mm 12mm 15mm;
+      margin: 25mm 15mm 15mm 15mm; /* Top-Margin auf 25mm erhöht für ~3cm Abstand am oberen Rand bei Umbrüchen */
     }
     @media print {
       html, body {
@@ -107,7 +107,7 @@
       .a4-page {
         page-break-after: always;
         break-after: page;
-        min-height: 268mm;
+        /* min-height entfernt, um künstliche leere Seiten zu verhindern */
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -123,6 +123,11 @@
         border: 1.5px solid #cbd5e1 !important;
         margin-bottom: 6px !important;
         padding: 7px 10px !important;
+      }
+      /* Verhindert einzelne Textzeilen auf einer neuen Seite */
+      p, h1, h2, h3, h4, span {
+        orphans: 3;
+        widows: 3;
       }
       .math-grid {
         background-size: 36px 36px !important;

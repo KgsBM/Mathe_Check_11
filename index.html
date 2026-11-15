@@ -81,13 +81,13 @@
     /* DIN A4 Druckoptimierung */
     @page {
       size: A4 portrait;
-      margin: 25mm 15mm 15mm 15mm; /* Top-Margin auf 25mm erhöht für ~3cm Abstand am oberen Rand bei Umbrüchen */
+      margin: 15mm 15mm 15mm 15mm; /* Standard-Rand, da wir die Aufgaben passgenau auf eine Seite zwingen */
     }
     @media print {
       html, body {
         background: #ffffff !important;
         color: #000000 !important;
-        font-size: 10.5pt !important;
+        font-size: 10pt !important; /* Leicht verkleinert, damit alles perfekt auf eine Seite passt */
         line-height: 1.3 !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
@@ -107,10 +107,7 @@
       .a4-page {
         page-break-after: always;
         break-after: page;
-        /* min-height entfernt, um künstliche leere Seiten zu verhindern */
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
+        display: block !important; /* ZWINGEND: Kein Flexbox für Seiten im Druck! Verhindert zerrissene Layouts & leere Seiten */
         box-sizing: border-box;
       }
       .a4-page:last-child {
@@ -121,13 +118,17 @@
         break-inside: avoid !important;
         page-break-inside: avoid !important;
         border: 1.5px solid #cbd5e1 !important;
-        margin-bottom: 6px !important;
-        padding: 7px 10px !important;
+        margin-bottom: 4px !important; /* Komprimiert für den Druck */
+        padding: 6px 10px !important;
       }
       /* Verhindert einzelne Textzeilen auf einer neuen Seite */
-      p, h1, h2, h3, h4, span {
+      p, h1, h2, h3, h4, span, div {
         orphans: 3;
         widows: 3;
+      }
+      .print-footer {
+        break-inside: avoid !important;
+        margin-top: 12px !important;
       }
       .math-grid {
         background-size: 36px 36px !important;
@@ -349,11 +350,11 @@
               </p>
 
               <!-- Kasten mit gemischten Rechnungen -->
-              <div class="bg-slate-50 border-2 border-slate-300 border-dashed rounded-xl p-2.5 mb-3 flex flex-wrap justify-center items-center gap-3 font-mono font-black text-slate-800 text-sm md:text-base" id="t1-pool">
+              <div class="bg-slate-50 border-2 border-slate-300 border-dashed rounded-xl p-2.5 mb-2 flex flex-wrap justify-center items-center gap-2 font-mono font-black text-slate-800 text-sm md:text-base" id="t1-pool">
                 <!-- JS füllt das hier -->
               </div>
 
-              <div class="space-y-2 text-xs md:text-sm">
+              <div class="space-y-1 text-xs md:text-sm">
                 <!-- 1a -->
                 <div class="bg-yellow-50/60 p-2 rounded-xl border border-yellow-200 flex flex-wrap items-center justify-between gap-3">
                   <span class="font-bold text-slate-800 flex-1 min-w-[200px] leading-snug" id="t1a-text"></span>
@@ -499,7 +500,7 @@
                 </div>
                 <div class="flex flex-col">
                   <span class="text-[11px] font-bold text-slate-600 block mb-1">✏️ Nebenrechnungen:</span>
-                  <div class="math-grid w-full flex-grow min-h-[120px] rounded-xl border-2 border-slate-300"></div>
+                  <div class="math-grid w-full flex-grow min-h-[120px] print:min-h-[72px] rounded-xl border-2 border-slate-300"></div>
                 </div>
               </div>
             </div>
@@ -551,7 +552,7 @@
         </div>
 
         <!-- Fußzeile Seite 1 -->
-        <div class="pt-2 border-t border-slate-200 flex justify-between items-center text-xs text-slate-400 font-bold mt-auto mb-2">
+        <div class="pt-2 border-t border-slate-200 flex justify-between items-center text-xs text-slate-400 font-bold mt-4 mb-2 print-footer">
           <span>KGS Bad Münder • Mathematik 5 • <strong class="text-slate-500">🤖 KI-generiertes Unterrichtsmaterial</strong></span>
           <span class="bg-slate-100 px-2 py-0.5 rounded-md text-slate-600">Seite 1 von 2 • Weiter mit Regelstandard ➔</span>
         </div>
@@ -640,7 +641,7 @@
                 <span class="text-[11px] font-bold text-slate-600 block mb-1">
                   ✏️ Rechenbereich für Nebenrechnungen:
                 </span>
-                <div class="math-grid w-full h-48 rounded-xl p-3 border-2 border-slate-300"></div>
+                <div class="math-grid w-full h-48 print:h-36 rounded-xl p-3 border-2 border-slate-300"></div>
               </div>
             </div>
 
@@ -763,7 +764,7 @@
         </div>
 
         <!-- Fußzeile Seite 2 mit KI-Kennzeichnung -->
-        <div class="pt-2 border-t border-slate-200 flex justify-between items-center text-xs text-slate-400 font-bold mt-auto">
+        <div class="pt-2 border-t border-slate-200 flex justify-between items-center text-xs text-slate-400 font-bold mt-4 print-footer">
           <span>KGS Bad Münder • Mathematik 5 • <strong class="text-slate-500">🤖 KI-generiertes Unterrichtsmaterial</strong></span>
           <span class="bg-slate-100 px-2 py-0.5 rounded-md text-slate-600">Seite 2 von 2 • Ende des Nachweises</span>
         </div>
